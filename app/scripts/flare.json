@@ -2,15 +2,16 @@
  "name": "flare",
  "children": [
   {
-   "name": "analytics",
+   "name": "",
+   "icon": "images/adjudicacion.png",
    "children": [
     {
      "name": "cluster",
      "children": [
-      {"name": "AgglomerativeCluster", "size": 3938, "icon": "images/adjudicacion.png"},
-      {"name": "CommunityStructure", "size": 3812, "icon": "images/adjudicacion.png"},
-      {"name": "HierarchicalCluster", "size": 6714, "icon": "images/adjudicacion.png"},
-      {"name": "MergeEdge", "size": 743, "icon": "images/adjudicacion.png"}
+      {"name": "", "size": 3938, "icon": "images/adjudicacion.png"},
+      {"name": "CommunityStructure", "size": 3812},
+      {"name": "", "size": 6714, "icon": "images/adjudicacion.png"},
+      {"name": "MergeEdge", "size": 743}
      ]
     },
     {
@@ -24,7 +25,8 @@
      ]
     },
     {
-     "name": "optimization",
+     "name": "",
+     "icon": "images/adjudicacion.png",
      "children": [
       {"name": "AspectRatioBanker", "size": 7074}
      ]

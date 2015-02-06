@@ -67,6 +67,22 @@ function update(source) {
       .attr("width", "100px")
       .attr("height", "100px");
 
+/*
+
+  nodeEnter.append('foreignObject')
+      .attr("x", "-50px")
+      .attr("y", "-50px")
+      .attr("width", 250)
+      .attr("height", 250)
+      .append("xhtml:div")
+      .style("background-image", function(d) { return "url(" + d.icon; + ")" })
+      .style("background-repeat", "no-repeat")
+      .style("width", "250px")
+      .style("height", "250px")
+      .html("<h1>Probando 1 2 3</h1><p style='color:red;'>Anda</p>");
+
+*/
+
   nodeEnter.append("text")
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
       .attr("dy", ".35em")
