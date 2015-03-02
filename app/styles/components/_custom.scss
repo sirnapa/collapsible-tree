@@ -1,0 +1,137 @@
+/* Estilos para los divs */
+.fondo-gris {
+	background: #d1d5d7;
+}
+
+.circulo {
+  	border-radius: 71px 71px 71px 71px;
+  	-moz-border-radius: 71px 71px 71px 71px;
+  	-webkit-border-radius: 71px 71px 71px 71px;
+  	border-style: solid;
+    border-width: 10px;
+  	border-color: #ffffff;
+  	text-align: center;
+  	width: 142px;
+  	height: 142px;
+}
+
+.rectangulo {
+	border-radius: 10px 10px 10px 10px;
+  -moz-border-radius: 15px 15px 15px 15px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border-style: solid;
+  border-width: 10px;
+	border-color: #ffffff;
+	text-align: center;
+	width: 274px;
+	height: 100px;
+}
+
+.shadow {
+   -moz-box-shadow:    inset 5px 5px 30px -12px #000000;
+   -webkit-box-shadow: inset 5px 5px 30px -12px #000000;
+   box-shadow:         inset 5px 5px 30px -12px #000000;
+}
+
+.planificacion {
+  	background: #e9710a;
+  	/*background-image: url("images/SVG_Planificacion.svg");*/
+}
+
+.convocatoria {
+  	background: #788083;
+}
+
+.adjudicacion {
+  	background: #a2d255;
+}
+
+.contrato {
+  	background: #0d617e;
+}
+
+.ampliacion {
+  	background: #008ea8;
+}
+
+.verificacion {
+  	background: #005fa8;
+}
+
+.fuenteBase {
+	font-family: PT Sans, sans-serif;
+	color:#ffffff;
+	margin: 0 0 0;
+}
+
+.tituloEtapa {
+	font-size: 17px;
+	font-weight:bold;
+}
+
+.tituloEtapaAdicional {
+	font-size: 14px;
+	font-weight:bold;
+}
+
+.nombreAdjudicado {
+	font-size: 12px;
+	font-weight:bold;
+}
+
+.fecha {
+	font-size: 10px;
+}
+
+.monto {
+	font-size: 13px;
+}
+
+.etiqueta {
+	border-radius: 1px 1px 1px 1px;
+	-moz-border-radius: 1px 1px 1px 1px;
+	-webkit-border-radius: 1px 1px 1px 1px;
+	text-align: center;
+	width: 60px;
+	height: 15px;
+	margin-left: 30px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.adjudicado, .ejecutado, .publicado {
+  background: #a2d255;
+}
+
+.suspendido, .impugnado {
+  background: #e9710a;
+}
+
+.cancelado, .anulado, .desierto {
+  background: #e74c3c;
+}
+
+.izq {
+	text-align: left;
+}
+
+.der {
+	text-align: right;
+}
+
+.pd15 {
+	margin-top: 15px;
+}
+
+.tituloInline {
+  /* display: inline-block; */
+  float: left;
+  width: 40%;
+}
+
+.etiquetaInline {
+  /* display: inline-block; */
+  float: left;
+  padding-bottom: 10px;
+  margin-left: 0px;
+}
