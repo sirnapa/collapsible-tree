@@ -1,0 +1,44 @@
+{
+  "name": "Planificación",
+  "fechaEstimada": "Estimada 02/22/2010",
+  "nodeId": "193399-adquisicion-scanner",
+  "children": [
+    {
+      "name": "Convocatoria",
+      "fechaPublicacion": "02/23/2010",
+      "estado": "Adjudicado",
+      "nodeId": "193399-adquisicion-scanner",
+      "planificacionId": "193399-adquisicion-scanner",
+      "children": [
+        {
+          "name": "Adjudicación",
+          "fechaPublicacion": "",
+          "nodeId": "193399-adquisicion-scanner",
+          "convocatoriaId": "193399-adquisicion-scanner",
+          "children": [
+            {
+              "name": "Contrato",
+              "fechaFirmaContrato": "04/15/2010",
+              "proveedor": "MASTER SOFT SRL",
+              "estado": "Adjudicado",
+              "monto": "PYG 30.030.400",
+              "nodeId": "193399-master-soft-srl-3",
+              "adjudicacionId": "193399-adquisicion-scanner",
+              "children": []
+            },
+            {
+              "name": "Contrato",
+              "fechaFirmaContrato": "04/15/2010",
+              "proveedor": "MASTER SOFT SRL",
+              "estado": "Adjudicado",
+              "monto": "PYG 30.030.400",
+              "nodeId": "193399-master-soft-srl-3",
+              "adjudicacionId": "193399-adquisicion-scanner",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

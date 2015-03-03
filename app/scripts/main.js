@@ -18,13 +18,13 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("scripts/flare.json", function(error, flare) {
-  root = flare;
+d3.json("scripts/llamado.json", function(error, llamado) {
+  root = llamado;
   root.x0 = height / 2;
   root.y0 = 0;
 
   function collapse(d) {
-    if (d.children) {
+    if (d.children && d.children.length > 0) {
       d._children = d.children;
       d._children.forEach(collapse);
       d.children = null;
@@ -42,7 +42,6 @@ function update(source) {
   // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse(),
       links = tree.links(nodes);
-
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
 
