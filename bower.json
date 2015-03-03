@@ -5,6 +5,8 @@
     "bootstrap-sass-official": "~3.2.0",
     "d3": "~3.5.3",
     "lodash": "~3.3.1",
-    "handlebars": "~3.0.0"
+    "handlebars": "~3.0.0",
+    "modernizr": "~2.8.3",
+    "momentjs": "~2.9.0"
   }
 }

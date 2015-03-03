@@ -19,29 +19,26 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-function drawTree(){
-  d3.json("scripts/llamado.json", function(error, llamado) {
-    root = llamado;
-    root.x0 = height / 2;
-    root.y0 = 0;
+function drawTree(llamadoTree){
+  root = llamadoTree;
+  root.x0 = height / 2;
+  root.y0 = 0;
 
-    function collapse(d) {
-      if (d.children && d.children.length > 0) {
-        d._children = d.children;
-        d._children.forEach(collapse);
-        d.children = null;
-      }
+  function collapse(d) {
+    if (d.children && d.children.length > 0) {
+      d._children = d.children;
+      d._children.forEach(collapse);
+      d.children = null;
     }
+  }
 
-    root.children.forEach(collapse);
-    update(root);
-  });
+  root.children.forEach(collapse);
+  update(root);
 }
 
 d3.select(self.frameElement).style("height", "800px");
 
 function contentByNode(nodo){
-  console.log(nodo);
   var source, template, context, content = 'Probando';
   switch(nodo.depth){
     case 0:
@@ -87,7 +84,6 @@ function update(source) {
       links = tree.links(nodes);
   // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
-
   // Update the nodes…
   var node = svg.selectAll("g.node")
       .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -198,5 +194,12 @@ function click(d) {
 }
 
 $(document).ready(function(){
-  drawTree();
+  //Remote
+  /*CGraph.graphService.getTree('249043-adquisicion-almuerzo-escolar-distintas-escuelas-publicas-ciudad').then(function(llamadoTree){
+    drawTree(llamadoTree);
+  });*/
+
+  d3.json('scripts/llamado.json', function(llamadoTree){
+    drawTree(llamadoTree);
+  });
 });
