@@ -13,29 +13,72 @@ var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
 var svg = d3.select("body").append("svg")
+    .attr("class", "fondo-gris")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("scripts/llamado.json", function(error, llamado) {
-  root = llamado;
-  root.x0 = height / 2;
-  root.y0 = 0;
+function drawTree(){
+  d3.json("scripts/llamado.json", function(error, llamado) {
+    root = llamado;
+    root.x0 = height / 2;
+    root.y0 = 0;
 
-  function collapse(d) {
-    if (d.children && d.children.length > 0) {
-      d._children = d.children;
-      d._children.forEach(collapse);
-      d.children = null;
+    function collapse(d) {
+      if (d.children && d.children.length > 0) {
+        d._children = d.children;
+        d._children.forEach(collapse);
+        d.children = null;
+      }
     }
-  }
 
-  root.children.forEach(collapse);
-  update(root);
-});
+    root.children.forEach(collapse);
+    update(root);
+  });
+}
 
 d3.select(self.frameElement).style("height", "800px");
+
+function contentByNode(nodo){
+  console.log(nodo);
+  var source, template, context, content = 'Probando';
+  switch(nodo.depth){
+    case 0:
+      source  = $("#nodo-planificacion").html();
+      context = {titulo: nodo.name, fecha: nodo.fechaEstimada};
+      break;
+
+    case 1:
+      source = $("#nodo-convocatoria").html();
+      context = {titulo: nodo.name, fecha: nodo.fechaPublicacion, estado: nodo.estado};
+      break;
+
+    case 2:
+      source = $("#nodo-adjudicacion").html();
+      context = {titulo: nodo.name, fecha: nodo.fechaPublicacion};
+      break;
+
+    case 3:
+      source = $("#nodo-contrato").html();
+      context = {titulo: nodo.name, fecha: nodo.fechaFirmaContrato, estado: nodo.estado, proveedor: nodo.proveedor, monto: nodo.monto};
+  }
+
+  if(source){
+    template = Handlebars.compile(source);
+    content = template(context);
+  }
+  return content;
+}
+
+function widthByNode(nodo){
+  var width = 142;
+  //Contrato
+  if(nodo.depth === 3){
+    width = 274;
+  }
+  return width;
+}
 
 function update(source) {
 
@@ -55,39 +98,33 @@ function update(source) {
       .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
       .on("click", click);
 
-  nodeEnter.append("circle")
-      .attr("r", 1e-6)
-      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
 
-  nodeEnter.append("image")
+  /*nodeEnter.append("image")
       .attr("xlink:href", function(d) { return d.icon; })
       .attr("x", "-50px")
       .attr("y", "-50px")
       .attr("width", "100px")
-      .attr("height", "100px");
-
-/*
+      .attr("height", "100px");*/
 
   nodeEnter.append('foreignObject')
-      .attr("x", "-50px")
-      .attr("y", "-50px")
-      .attr("width", 250)
-      .attr("height", 250)
+      .attr("x", -71)
+      .attr("y", -71)
+      .attr("width", widthByNode)
+      .attr("height", 142)
       .append("xhtml:div")
-      .style("background-image", function(d) { return "url(" + d.icon; + ")" })
-      .style("background-repeat", "no-repeat")
-      .style("width", "250px")
-      .style("height", "250px")
-      .html("<h1>Probando 1 2 3</h1><p style='color:red;'>Anda</p>");
+      .html(contentByNode);
 
-*/
+    /*nodeEnter.append("circle")
+      .attr("r", 1e-6)
+      .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });*/
 
-  nodeEnter.append("text")
+
+  /*nodeEnter.append("text")
       .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
       .attr("dy", ".35em")
       .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
       .text(function(d) { return d.name; })
-      .style("fill-opacity", 1e-6);
+      .style("fill-opacity", 1e-6);*/
 
   // Transition nodes to their new position.
   var nodeUpdate = node.transition()
@@ -120,6 +157,8 @@ function update(source) {
   // Enter any new links at the parent's previous position.
   link.enter().insert("path", "g")
       .attr("class", "link")
+      .attr("fill", "white")
+      .attr("stroke-width", "10px")
       .attr("d", function(d) {
         var o = {x: source.x0, y: source.y0};
         return diagonal({source: o, target: o});
@@ -157,3 +196,7 @@ function click(d) {
   }
   update(d);
 }
+
+$(document).ready(function(){
+  drawTree();
+});

@@ -38,6 +38,7 @@
     <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/popover.js"></script>
     <script src="bower_components/d3/d3.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
+    <script src="bower_components/handlebars/handlebars.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -45,55 +46,64 @@
     <script src="scripts/main.js"></script>
 
     <!-- Divs de prueba -->
-    <div height="800" class="fondo-gris">
-        <br/>
+    <script id="nodo-planificacion" type="text/x-handlebars-template">
         <div class="circulo shadow planificacion">
             <img src="images/SVG_Planificacion.svg" width="50" height="50">
-            <div id="etapa" class="fuenteBase tituloEtapa">Planificación</div>
-            <div id="fecha" class="fuenteBase fecha">20/05/2015</div>
+            <div id="etapa" class="fuenteBase tituloEtapa">{{titulo}}</div>
+            <div id="fecha" class="fuenteBase fecha">{{fecha}}</div>
         </div>
-        <br/>
+    </script>
+
+    <script id="nodo-convocatoria" type="text/x-handlebars-template">
         <div class="circulo shadow convocatoria">
             <img src="images/SVG_Convocatoria.svg" width="50" height="50">
-            <div id="etapa" class="fuenteBase tituloEtapa">Convocatoria</div>
-            <div id="fecha" class="fuenteBase fecha">20/05/2015</div>
-            <div id="etiqueta" class="fuenteBase fecha etiqueta cancelado">Desierta</div>
+            <div id="etapa" class="fuenteBase tituloEtapa">{{titulo}}</div>
+            <div id="fecha" class="fuenteBase fecha">{{fecha}}</div>
+            <div id="etiqueta" class="fuenteBase fecha etiqueta cancelado">{{estado}}</div>
         </div>
-        <br/>
+    </script>
+
+    <script id="nodo-adjudicacion" type="text/x-handlebars-template">
         <div class="circulo shadow adjudicacion">
             <img src="images/SVG_Adjudicacion.svg" width="50" height="50">
-            <div id="etapa" class="fuenteBase tituloEtapa">Adjudicación</div>
-            <div id="fecha" class="fuenteBase fecha">20/05/2015</div>
+            <div id="etapa" class="fuenteBase tituloEtapa">{{titulo}}</div>
+            <div id="fecha" class="fuenteBase fecha">{{fecha}}</div>
         </div>
-        <br/>
+    </script>
+
+    <script id="nodo-ampliacion" type="text/x-handlebars-template">
         <div class="circulo shadow ampliacion">
             <img src="images/SVG_Ampliacion_contrato.svg" width="50" height="50">
-            <div id="etapa" class="fuenteBase tituloEtapaAdicional">Amplicación de contrato</div>
-            <div id="fecha" class="fuenteBase fecha">20/05/2015</div>
+            <div id="etapa" class="fuenteBase tituloEtapaAdicional">{{titulo}}</div>
+            <div id="fecha" class="fuenteBase fecha">{{fecha}}</div>
         </div>
-        <br/>
+    </script>
+
+    <script id="nodo-verificacion" type="text/x-handlebars-template">
         <div class="circulo shadow verificacion">
             <img src="images/SVG_Verificacion_contrato.svg" width="50" height="50">
-            <div id="etapa" class="fuenteBase tituloEtapaAdicional">Verificación de contrato</div>
-            <div id="fecha" class="fuenteBase fecha">20/05/2015</div>
+            <div id="etapa" class="fuenteBase tituloEtapaAdicional">{{titulo}}</div>
+            <div id="fecha" class="fuenteBase fecha">{{fecha}}</div>
         </div>
-        <br/>
+    </script>
+
+    <script id="nodo-contrato" type="text/x-handlebars-template">
         <div class="rectangulo shadow contrato">
             <img src="images/SVG_Contrato.svg" width="50" height="80" align="left">
-            <div id="etapa" class="fuenteBase tituloEtapa izq tituloInline">Contrato</div>
-            <div id="etiqueta" class="etiqueta fuenteBase fecha etiquetaInline ejecutado">Ejecutado</div>
-            <div id="fecha" class="fuenteBase fecha izq">20/05/2015</div>
-            <div id="proveedor" class="fuenteBase nombreAdjudicado izq">Nueva Asunción Automotriz S.R.L.</div>
-            <div id="monto" class="fuenteBase monto izq">Gs. 200.000.000</div>
+            <div id="etapa" class="fuenteBase tituloEtapa izq tituloInline">{{titulo}}</div>
+            <div id="etiqueta" class="etiqueta fuenteBase fecha etiquetaInline ejecutado">{{estado}}</div>
+            <div id="fecha" class="fuenteBase fecha izq">{{fecha}}</div>
+            <div id="proveedor" class="fuenteBase nombreAdjudicado izq">{{proveedor}}</div>
+            <div id="monto" class="fuenteBase monto izq">{{monto}}</div>
         </div>
-        <br/>
-        <div class="rectangulo shadow contrato">
-            <img src="images/SVG_Mas_contratos.svg" width="50" height="80" align="left">
-            <div id="etapa" class="fuenteBase tituloEtapa izq pd15">Ver todos los contratos</div>
-            <div id="fecha" class="fuenteBase fecha izq">Ver listado de contratos</div>
-        </div>
-         <br/>
+    </script>
+    <script id="nodo-contrato-mas" type="text/x-handlebars-template">
+    <div class="rectangulo shadow contrato">
+        <img src="images/SVG_Mas_contratos.svg" width="50" height="80" align="left">
+        <div id="etapa" class="fuenteBase tituloEtapa izq pd15">Ver todos los contratos</div>
+        <div id="fecha" class="fuenteBase fecha izq">Ver listado de contratos</div>
     </div>
+    </script>
     <!-- endbuild -->
 </body>
 </html>
