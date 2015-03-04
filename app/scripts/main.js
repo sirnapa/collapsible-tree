@@ -81,6 +81,15 @@ CGraph.treeBuilder = function(llamadoTree){
     return width;
   }
 
+  function yOffsetByNode(nodo){
+    var yOffset = -71;
+    //Contrato
+    if(nodo.depth === 3){
+      yOffset = -50;
+    }
+    return yOffset;
+  }
+
   function update(source) {
 
     // Compute the new tree layout.
@@ -88,8 +97,8 @@ CGraph.treeBuilder = function(llamadoTree){
         links = tree.links(nodes);
     
     var maxNodesByDepth = _(nodes).countBy(function(n){ return n.depth; }).values().max();
-    height = 200 * maxNodesByDepth;
-    //d3.select('svg').attr("height", height + margin.top + margin.bottom);
+    height = (200 * maxNodesByDepth < 675) ? 675 : 200 * maxNodesByDepth; 
+    d3.select('svg').attr("height", height + margin.top + margin.bottom);
     
     tree = d3.layout.tree().size([height, width]);
     nodes = tree.nodes(root).reverse();
@@ -117,7 +126,7 @@ CGraph.treeBuilder = function(llamadoTree){
 
     nodeEnter.append('foreignObject')
         .attr("x", -71)
-        .attr("y", -71)
+        .attr("y", yOffsetByNode)
         .attr("width", widthByNode)
         .attr("height", 142)
         .append("xhtml:div")
@@ -213,7 +222,7 @@ CGraph.treeBuilder = function(llamadoTree){
 
 $(document).ready(function(){
   //Remote
-  CGraph.graphService.getTree('268573-adquisicion-gps-aeronave-mag').then(function(llamadoTree){
+  CGraph.graphService.getTree('193399-adquisicion-scanner').then(function(llamadoTree){
     CGraph.treeBuilder.drawTree(llamadoTree);
   });
 

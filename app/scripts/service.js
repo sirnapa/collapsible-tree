@@ -339,15 +339,21 @@ CGraph.graphService = (function() {
         });
 
         _.each(nodosContratos, function(c){
-          c.children = _.filter(nodosModificaciones, function(m){ return m.contratoId === c.nodeId; });
+          c.children = _(nodosModificaciones).filter(function(m){ return m.contratoId === c.nodeId; })
+                                              .sortBy(function(m){ return moment(m.fecha, 'DD-MM-YYYY'); })
+                                              .value();
         });
 
         _.each(nodosAdjudicaciones, function(a){
-          a.children = _.filter(nodosContratos, function(m){ return m.adjudicacionId === a.nodeId; });
+          a.children = _(nodosContratos).filter(function(c){ return c.adjudicacionId === a.nodeId; })
+                                          .sortBy(function(c){ return moment(c.fechaFirmaContrato, 'DD-MM-YYYY'); })
+                                          .value();
         });
 
         _.each(nodosConvocatorias, function(c){
-          c.children = _.filter(nodosAdjudicaciones, function(a){ return a.convocatoriaId === c.nodeId; });
+          c.children = _(nodosAdjudicaciones).filter(function(a){ return a.convocatoriaId === c.nodeId; })
+                                              .sortBy(function(a){ return moment(c.fechaPublicacion, 'DD-MM-YYYY'); })
+                                              .value();
         });
 
         root.children = _.sortBy(nodosConvocatorias, function(c){ return moment(c.fechaPublicacion, 'DD-MM-YYYY'); });
