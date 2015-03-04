@@ -351,7 +351,7 @@ CGraph.graphService = (function() {
         });
 
         root.children = _.sortBy(nodosConvocatorias, function(c){ return moment(c.fechaPublicacion, 'DD-MM-YYYY'); });
-
+        console.log(root);
         d.resolve(root);
         console.timeEnd('fetchLlamado');
         return d;
