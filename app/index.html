@@ -63,7 +63,15 @@
             <img src="images/SVG_Convocatoria.svg" width="50" height="50">
             <div id="etapa" class="fuenteBase tituloEtapa">{{titulo}}</div>
             <div id="fecha" class="fuenteBase fecha">{{fecha}}</div>
+            {{#if rojo}}
             <div id="etiqueta" class="fuenteBase fecha etiqueta cancelado">{{estado}}</div>
+            {{/if}}
+            {{#if naranja}}
+            <div id="etiqueta" class="fuenteBase fecha etiqueta suspendido">{{estado}}</div>
+            {{/if}}
+            {{#if verde}}
+            <div id="etiqueta" class="fuenteBase fecha etiqueta adjudicado">{{estado}}</div>
+            {{/if}}
         </div>
     </script>
 
@@ -79,6 +87,7 @@
         <div class="circulo shadow ampliacion">
             <img src="images/SVG_Ampliacion_contrato.svg" width="50" height="50">
             <div id="etapa" class="fuenteBase tituloEtapaAdicional">{{titulo}}</div>
+            <div id="monto" class="fuenteBase monto">{{monto}}</div>
             <div id="fecha" class="fuenteBase fecha">{{fecha}}</div>
         </div>
     </script>
@@ -95,7 +104,15 @@
         <div class="rectangulo shadow contrato">
             <img src="images/SVG_Contrato.svg" width="50" height="80" align="left">
             <div id="etapa" class="fuenteBase tituloEtapa izq tituloInline">{{titulo}}</div>
-            <div id="etiqueta" class="etiqueta fuenteBase fecha etiquetaInline ejecutado">{{estado}}</div>
+            {{#if rojo}}
+                <div id="etiqueta" class="etiqueta fuenteBase fecha etiquetaInline cancelado">{{estado}}</div>
+            {{/if}}
+            {{#if naranja}}
+                <div id="etiqueta" class="etiqueta fuenteBase fecha etiquetaInline suspendido">{{estado}}</div>
+            {{/if}}
+            {{#if verde}}
+                <div id="etiqueta" class="etiqueta fuenteBase fecha etiquetaInline ejecutado">{{estado}}</div>
+            {{/if}}
             <div id="fecha" class="fuenteBase fecha izq">{{fecha}}</div>
             <div id="proveedor" class="fuenteBase nombreAdjudicado izq">{{proveedor}}</div>
             <div id="monto" class="fuenteBase monto izq">{{monto}}</div>

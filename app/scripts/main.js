@@ -1,6 +1,6 @@
 CGraph.treeBuilder = function(llamadoTree){
   var margin = {top: 20, right: 120, bottom: 20, left: 120},
-    width = 960 - margin.right - margin.left,
+    width = 1060 - margin.right - margin.left,
     height = 675 - margin.top - margin.bottom;
     
   var i = 0,
@@ -63,12 +63,23 @@ CGraph.treeBuilder = function(llamadoTree){
       case 3:
         source = $("#nodo-contrato").html();
         context = {titulo: nodo.name, fecha: nodo.fechaFirmaContrato, estado: nodo.estado, proveedor: nodo.proveedor, monto: nodo.monto};
+        break;
+
+      case 4:
+        console.log(nodo);
+        source = $("#nodo-ampliacion").html();
+        context = {titulo: nodo.name, fecha: nodo.fecha, estado: nodo.estado, monto: nodo.monto};
+        break;
     }
 
-    if(source){
-      template = Handlebars.compile(source);
-      content = template(context);
+    if(context.estado){
+      context.rojo = _.contains(['Cancelado', 'Anulado', 'Desierto'], context.estado);
+      context.naranja = _.contains(['Suspendido', 'Impugnado'], context.estado);
+      context.verde = _.contains(['Adjudicado', 'Ejecutado', 'Publicado'], context.estado);
     }
+    template = Handlebars.compile(source);
+    content = template(context);
+    
     return content;
   }
 
@@ -97,15 +108,20 @@ CGraph.treeBuilder = function(llamadoTree){
         links = tree.links(nodes);
     
     var maxNodesByDepth = _(nodes).countBy(function(n){ return n.depth; }).values().max();
-    height = (200 * maxNodesByDepth < 675) ? 675 : 200 * maxNodesByDepth; 
-    d3.select('svg').attr("height", height + margin.top + margin.bottom);
+    height = (220 * maxNodesByDepth < 675) ? 675 : 220 * maxNodesByDepth; 
+    d3.select('svg')
+      .attr("height", height + margin.top + margin.bottom);
     
     tree = d3.layout.tree().size([height, width]);
     nodes = tree.nodes(root).reverse();
     links = tree.links(nodes);
 
     // Normalize for fixed-depth.
-    nodes.forEach(function(d) { d.y = d.depth * 180; });
+    nodes.forEach(function(d) {
+      var offset = (d.depth === 4) ? 125 : 0;
+      d.y = d.depth * 180 + offset; 
+    });
+    console.log(nodes);
     // Update the nodes…
     var node = svg.selectAll("g.node")
         .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -116,14 +132,6 @@ CGraph.treeBuilder = function(llamadoTree){
         .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
         .on("click", click);
 
-
-    /*nodeEnter.append("image")
-        .attr("xlink:href", function(d) { return d.icon; })
-        .attr("x", "-50px")
-        .attr("y", "-50px")
-        .attr("width", "100px")
-        .attr("height", "100px");*/
-
     nodeEnter.append('foreignObject')
         .attr("x", -71)
         .attr("y", yOffsetByNode)
@@ -131,18 +139,6 @@ CGraph.treeBuilder = function(llamadoTree){
         .attr("height", 142)
         .append("xhtml:div")
         .html(contentByNode);
-
-      /*nodeEnter.append("circle")
-        .attr("r", 1e-6)
-        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });*/
-
-
-    /*nodeEnter.append("text")
-        .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
-        .attr("dy", ".35em")
-        .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
-        .text(function(d) { return d.name; })
-        .style("fill-opacity", 1e-6);*/
 
     // Transition nodes to their new position.
     var nodeUpdate = node.transition()
@@ -222,7 +218,7 @@ CGraph.treeBuilder = function(llamadoTree){
 
 $(document).ready(function(){
   //Remote
-  CGraph.graphService.getTree('193399-adquisicion-scanner').then(function(llamadoTree){
+  CGraph.graphService.getTree('272219-adquisicion-softwares').then(function(llamadoTree){
     CGraph.treeBuilder.drawTree(llamadoTree);
   });
 

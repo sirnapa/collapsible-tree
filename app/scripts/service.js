@@ -181,8 +181,9 @@ CGraph.dataService = (function() {
         type: "GET",
         url: url,
         headers: {'Authorization': 'Bearer ' + accessToken},
-        success: function (data) {
-          callback(data['@graph'][0].contrato.list);
+        dataFilter: function(data){
+          var jsonData = JSON.parse(data)['@graph'][0]['modificacion_contrato'].list;
+          return JSON.stringify(jsonData);
         }
       });
     });
@@ -326,13 +327,13 @@ CGraph.graphService = (function() {
             'adjudicacionId': c['adjudicacion_id']
           }
         });
-
         var nodosModificaciones = _.map(modificaciones, function(m){
+          //console.log(m);
           return {
             'name': m.tipo,
             'fecha': moment().format('L'),
             'estado': m.estado.nombre,
-            'monto': m.moneda.codigo + ' ' + m['monto'].toLocaleString(),
+            'monto': (m.monto) ? m.moneda.codigo + ' ' + m['monto'].toLocaleString() : '',
             'nodeId': m.id,
             'contratoId': m['contrato_id']
           }
