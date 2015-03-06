@@ -1,7 +1,7 @@
 CGraph.treeBuilder = function(llamadoTree){
   var margin = {top: 20, right: 120, bottom: 20, left: 120},
     width = 1060 - margin.right - margin.left,
-    height = 675 - margin.top - margin.bottom;
+    height = 700 - margin.top - margin.bottom;
     
   var i = 0,
       duration = 750,
@@ -13,7 +13,7 @@ CGraph.treeBuilder = function(llamadoTree){
   var diagonal = d3.svg.diagonal()
       .projection(function(d) { return [d.y, d.x]; });
 
-  var svg;
+  var svg, spinner;
   function setUp(){
     svg = d3.select("#viz-container").append("svg")
         .attr("class", "fondo-gris")
@@ -22,6 +22,27 @@ CGraph.treeBuilder = function(llamadoTree){
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
   };
+
+  function showTree(id){
+    d3.select("svg").remove();
+    var target = document.getElementById('viz-container');
+    if(!spinner){
+      spinner = new Spinner({
+        lines: 13,
+        length: 20,
+        width: 10,
+        radius: 30,
+        color: '#fff'
+      });
+    }
+    spinner.stop();
+    spinner.spin(target);
+    
+    CGraph.graphService.getTree(id).then(function(llamadoTree){
+      drawTree(llamadoTree);
+      spinner.stop();
+    });
+  }
 
   function drawTree(llamadoTree){
     setUp();
@@ -101,21 +122,47 @@ CGraph.treeBuilder = function(llamadoTree){
     return yOffset;
   }
 
+  function buildTree(niter){
+    // Compute the new tree layout.
+    niter = niter = niter || 0;
+    var nodes = tree.nodes(root).reverse(),
+        links = tree.links(nodes);    
+    var treeHeight = height + niter * 50;
+    
+    tree = d3.layout.tree().size([treeHeight, width]);
+    var minNodeSpacing = _.reduce(nodes, function(min, node, i, nodes){
+      var spacing;
+      if(i + 1 < nodes.length && node.depth === nodes[i + 1].depth){
+        spacing = Math.abs(node.x - nodes[i + 1].x);
+        min = (spacing < min) ? spacing : min;
+      }
+      return min;
+    }, height);
+
+    if (minNodeSpacing < 140){
+      //Iterate until minimum required height is found
+      return buildTree(niter + 1);
+    }else{
+      return {
+        nodes: nodes,
+        links: links,
+        height: treeHeight
+      };
+    }
+  }
+
   function update(source) {
+    var treeElems = buildTree();
+    var nodes = treeElems.nodes;
+    var links =  treeElems.links;
+
+    d3.select('svg')
+      .attr("height", treeElems.height + margin.top + margin.bottom);
 
     // Compute the new tree layout.
     var nodes = tree.nodes(root).reverse(),
         links = tree.links(nodes);
     
-    var maxNodesByDepth = _(nodes).countBy(function(n){ return n.depth; }).values().max();
-    height = (220 * maxNodesByDepth < 675) ? 675 : 220 * maxNodesByDepth; 
-    d3.select('svg')
-      .attr("height", height + margin.top + margin.bottom);
-    
-    tree = d3.layout.tree().size([height, width]);
-    nodes = tree.nodes(root).reverse();
-    links = tree.links(nodes);
-
     // Normalize for fixed-depth.
     nodes.forEach(function(d) {
       var offset = (d.depth === 4) ? 125 : 0;
@@ -211,16 +258,27 @@ CGraph.treeBuilder = function(llamadoTree){
     update(d);
   }
 
-  return {drawTree: drawTree};
+  return {showTree: showTree};
 
 }();
 
 
 $(document).ready(function(){
   //Remote
-  CGraph.graphService.getTree('272219-adquisicion-softwares').then(function(llamadoTree){
-    CGraph.treeBuilder.drawTree(llamadoTree);
+  CGraph.treeBuilder.showTree('272219-adquisicion-softwares');
+  $('input').keypress(function (e){
+    if (e.which == 13) {
+      CGraph.treeBuilder.showTree($('input').val());
+      return false;
+    }
   });
+
+  $('.btn').on('click', function(){
+    console.log($('input').val());
+    CGraph.treeBuilder.showTree($('input').val());
+    return false;
+  });
+
 
   /*d3.json('scripts/llamado.json', function(llamadoTree){
     drawTree(llamadoTree);
