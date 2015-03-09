@@ -286,7 +286,9 @@ CGraph.dataService = (function() {
 })();
 
 CGraph.graphService = (function() {
-  var getTree = function(id){
+  var getTree = function(id, truncate, maxNodes){
+    truncate = true || truncate;
+    maxNodes = 4 || maxNodes;
     console.time('fetchLlamado');
     return CGraph.dataService.fetchNodos(id)
       .then(function(planificacion, convocatorias, adjudicaciones, contratos, modificaciones){
@@ -349,6 +351,13 @@ CGraph.graphService = (function() {
           a.children = _(nodosContratos).filter(function(c){ return c.adjudicacionId === a.nodeId; })
                                           .sortBy(function(c){ return moment(c.fechaFirmaContrato, 'DD-MM-YYYY'); })
                                           .value();
+          if(a.children.length >= maxNodes){
+            a.children = _.takeRight(a.children, maxNodes - 1);
+            a.children.unshift({
+              'name': 'Ver todos los Contratos',
+              'fechaFirmaContrato': 'Ver listado de contratos'
+            });
+          }
         });
 
         _.each(nodosConvocatorias, function(c){
@@ -358,6 +367,14 @@ CGraph.graphService = (function() {
         });
 
         root.children = _.sortBy(nodosConvocatorias, function(c){ return moment(c.fechaPublicacion, 'DD-MM-YYYY'); });
+        if(root.children.length >= maxNodes){
+          root.children = _.takeRight(root.children, maxNodes - 1);
+          root.children.unshift({
+            'name': 'Ver todas las convocatorias',
+            'fechaPublicacion': 'Ir al listado'
+          });
+        }
+
         console.log(root);
         d.resolve(root);
         console.timeEnd('fetchLlamado');

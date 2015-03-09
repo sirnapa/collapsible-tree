@@ -14,6 +14,7 @@ CGraph.treeBuilder = function(llamadoTree){
       .projection(function(d) { return [d.y, d.x]; });
 
   var svg, spinner;
+
   function setUp(){
     svg = d3.select("#viz-container").append("svg")
         .attr("class", "fondo-gris")
@@ -82,12 +83,16 @@ CGraph.treeBuilder = function(llamadoTree){
         break;
 
       case 3:
-        source = $("#nodo-contrato").html();
+        //Placeholder node
+        if(!nodo.estado && !nodo.proveedor && !nodo.monto){
+          source = $("#nodo-contrato-mas").html();
+        }else{
+          source = $("#nodo-contrato").html();
+        }
         context = {titulo: nodo.name, fecha: nodo.fechaFirmaContrato, estado: nodo.estado, proveedor: nodo.proveedor, monto: nodo.monto};
         break;
 
       case 4:
-        console.log(nodo);
         source = $("#nodo-ampliacion").html();
         context = {titulo: nodo.name, fecha: nodo.fecha, estado: nodo.estado, monto: nodo.monto};
         break;
@@ -125,11 +130,11 @@ CGraph.treeBuilder = function(llamadoTree){
   function buildTree(niter){
     // Compute the new tree layout.
     niter = niter = niter || 0;
+    var treeHeight = height + niter * 50;
+    tree = d3.layout.tree().size([treeHeight, width]);
     var nodes = tree.nodes(root).reverse(),
         links = tree.links(nodes);    
-    var treeHeight = height + niter * 50;
-    
-    tree = d3.layout.tree().size([treeHeight, width]);
+    console.log(treeHeight);
     var minNodeSpacing = _.reduce(nodes, function(min, node, i, nodes){
       var spacing;
       if(i + 1 < nodes.length && node.depth === nodes[i + 1].depth){
@@ -139,7 +144,7 @@ CGraph.treeBuilder = function(llamadoTree){
       return min;
     }, height);
 
-    if (minNodeSpacing < 140){
+    if (minNodeSpacing < 145){
       //Iterate until minimum required height is found
       return buildTree(niter + 1);
     }else{
@@ -155,7 +160,6 @@ CGraph.treeBuilder = function(llamadoTree){
     var treeElems = buildTree();
     var nodes = treeElems.nodes;
     var links =  treeElems.links;
-
     d3.select('svg')
       .attr("height", treeElems.height + margin.top + margin.bottom);
 
@@ -168,7 +172,6 @@ CGraph.treeBuilder = function(llamadoTree){
       var offset = (d.depth === 4) ? 125 : 0;
       d.y = d.depth * 180 + offset; 
     });
-    console.log(nodes);
     // Update the nodes…
     var node = svg.selectAll("g.node")
         .data(nodes, function(d) { return d.id || (d.id = ++i); });
@@ -191,13 +194,6 @@ CGraph.treeBuilder = function(llamadoTree){
     var nodeUpdate = node.transition()
         .duration(duration)
         .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
-
-    nodeUpdate.select("circle")
-        .attr("r", 4.5)
-        .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
-
-    nodeUpdate.select("text")
-        .style("fill-opacity", 1);
 
     // Transition exiting nodes to the parent's new position.
     var nodeExit = node.exit().transition()
@@ -248,14 +244,21 @@ CGraph.treeBuilder = function(llamadoTree){
 
   // Toggle children on click.
   function click(d) {
+    var updateFlag;
     if (d.children) {
+      updateFlag = d.children.length > 0;
       d._children = d.children;
       d.children = null;
     } else {
+      updateFlag = d._children.length > 0;
       d.children = d._children;
       d._children = null;
     }
-    update(d);
+
+    //Avoid updating if node has no children
+    if(updateFlag){
+      update(d);
+    }
   }
 
   return {showTree: showTree};
