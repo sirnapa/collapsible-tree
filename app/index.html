@@ -128,7 +128,7 @@
     </script>
     <!-- endbuild -->
     <div id="search-bar">
-        <div class="row">        
+        <div class="row">
           <div class="col-lg-6 col-sm-12">
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Ingrese aquí el ID de la planificación a visualizar.">
@@ -139,7 +139,64 @@
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
     </div>
-    
+
     <div id="viz-container" class="fondo-gris"></div>
+
+    <br/>
+    <div id="ref-container">
+        <div class="fuenteBaseRef tituloEtapa izq">Referencias</div>
+        <div class="fuenteBaseRef ref-desc">Colores referenciales de Etapas y Estados</div>
+        <br/>
+        <table class="ref-table">
+            <tr>
+                <td>
+                    <div class="fuenteBaseRef ref-title">Etapas</div>
+                </td>
+                <td>
+                    <div class="fuenteBaseRef ref-title">Estados</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ref-circulo planificacion"></div>
+                    <div class="fuenteBaseRef ref-label">Planificación</div>
+                </td>
+                <td>
+                    <div class="ref-circulo adjudicado"></div>
+                    <div class="fuenteBaseRef ref-label">Adjudicado - Ejecutado - Publicado</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                   <div class="ref-circulo convocatoria"></div>
+                    <div class="fuenteBaseRef ref-label">Convocatoria / Llamado</div>
+                </td>
+                <td>
+                    <div class="ref-circulo suspendido"></div>
+                    <div class="fuenteBaseRef ref-label">Suspendido - Impugnado</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ref-circulo adjudicacion"></div>
+                    <div class="fuenteBaseRef ref-label">Adjudicación</div>
+                </td>
+                <td>
+                    <div class="ref-circulo cancelado"></div>
+                    <div class="fuenteBaseRef ref-label">Cancelado - Anulado - Desierto</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ref-circulo contrato"></div>
+                    <div class="fuenteBaseRef ref-label">Contrato</div>
+                </td>
+                <td>
+                    <div></div>
+                    <div></div>
+                </td>
+            </tr>
+         </table>
+    </div>
 </body>
 </html>
